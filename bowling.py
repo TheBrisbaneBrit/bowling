@@ -11,7 +11,7 @@ def roll_the_ball(bowling_round):
         bowling_round (int): An integer between 1 and 10 which represents the round of bowling in a session.
     Returns:
         A pandas Dataframe with that contains the bowling round, first bowl in the round, second bowl in the round, whether the player
-        scored a Strike/Spare or not and a dummy value of 0 for the round score.
+        scored a Strike/Spare or not and a score for the round.
     """
     assert 1 <= bowling_round <= 10, "Bowling round must be between 1 and 10."
     first_bowl = random.randint(0,10)
@@ -22,7 +22,7 @@ def roll_the_ball(bowling_round):
         spare_or_strike = "Spare"
     else:
         spare_or_strike = ""
-    results_this_round = pd.DataFrame([[bowling_round, first_bowl, second_bowl, spare_or_strike, 0]],
+    results_this_round = pd.DataFrame([[bowling_round, first_bowl, second_bowl, spare_or_strike, first_bowl + second_bowl]],
                                         columns=["bowling_round", "first_bowl", "second_bowl", "spare_or_strike", "round_score"])
     return results_this_round
 
@@ -39,8 +39,7 @@ def calculate_score(bowling_results, bowling_round):
         the round score.
         bowling_round (int): An integer between 1 and 10 which represents the round of bowling in a session.
     Returns:
-        The previous round score as an integer.
-        The current round score as an integer.
+        A pandas dataframe with the historical bowling results and an updated score for a given round.
     """
     previous_round_spare_or_strike = bowling_results.loc[bowling_results['bowling_round'] == bowling_round -1, "spare_or_strike"].to_string(index=False)
     first_bowl = bowling_results.loc[bowling_results['bowling_round'] == bowling_round, "first_bowl"].item()
